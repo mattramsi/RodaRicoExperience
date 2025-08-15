@@ -25,7 +25,8 @@ struct RodaRicoExperienceApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            StartGameView()
+                .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }

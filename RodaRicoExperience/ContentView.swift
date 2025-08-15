@@ -15,6 +15,36 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List {
+                // Start Game Button
+                NavigationLink {
+                    StartGameView()
+                } label: {
+                    HStack {
+                        Image(systemName: "gamecontroller.fill")
+                            .foregroundColor(.green)
+                        Text("Start Game (Sticker Scanner)")
+                            .font(.headline)
+                    }
+                }
+                .padding(.vertical, 8)
+                
+                Divider()
+                
+                // AR Experience Button
+                NavigationLink {
+                    StartGameView()
+                } label: {
+                    HStack {
+                        Image(systemName: "camera.viewfinder")
+                            .foregroundColor(.blue)
+                        Text("AR Experience")
+                            .font(.headline)
+                    }
+                }
+                .padding(.vertical, 8)
+                
+                Divider()
+                
                 ForEach(items) { item in
                     NavigationLink {
                         Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
