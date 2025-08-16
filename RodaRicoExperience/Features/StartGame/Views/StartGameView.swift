@@ -12,6 +12,9 @@ struct StartGameView: View {
     
     var body: some View {
         Group {
+            let _ = print("🔄 StartGameView - currentView: \(viewModel.currentView)")
+            let _ = print("🔄 StartGameView - currentPhase: \(viewModel.currentPhase)")
+            
             switch viewModel.currentView {
             case .initial:
                 // Initial state - welcome screen with start button
@@ -29,7 +32,7 @@ struct StartGameView: View {
                         .padding(.horizontal)
                     
                     Button(action: {
-                        viewModel.currentView = .arView
+                        viewModel.currentView = .startGame
                         print("🚀 Starting AR Experience")
                     }) {
                         HStack {
@@ -51,7 +54,7 @@ struct StartGameView: View {
                 .navigationTitle("RodaRico")
                 .navigationBarTitleDisplayMode(.inline)
                 
-            case .arView:
+            case .startGame:
                 // AR View com modais
                 ZStack {
                     // AR Container
@@ -132,6 +135,12 @@ struct StartGameView: View {
                 // Final AR Container View
                 ARContainerFinalView(viewModel: viewModel)
                     .navigationTitle("Recompensa AR Final")
+                    .navigationBarTitleDisplayMode(.inline)
+                
+            case .arExperienceFinal:
+                // Final AR Experience View with Key and Treasure
+                ARExperienceView()
+                    .navigationTitle("Experiência AR Final")
                     .navigationBarTitleDisplayMode(.inline)
                 
             // Switch é exaustivo, não precisa de default case

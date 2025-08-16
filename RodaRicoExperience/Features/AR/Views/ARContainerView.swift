@@ -43,6 +43,9 @@ final class ARExperienceViewModel: ObservableObject {
     @Published var isDraggingKey = false
     @Published var keyPosition: CGPoint = .zero
     @Published var isKeyTouchingBau = false
+    @Published var showInstructions = true
+    @Published var showCode = false
+    @Published var finalCode = ""
     
     func handleCardTap() {
         print("Cartão clicado!")
@@ -101,10 +104,19 @@ final class ARExperienceViewModel: ObservableObject {
         }
     }
     
-    private func openBau() {
+    func openBau() {
         isBauOpen = true
         isCardVisible = false
-        print("Baú aberto com sucesso!")
+        showInstructions = false
+        generateFinalCode()
+        print("Baú aberto com sucesso! Código gerado: \(finalCode)")
+    }
+    
+    private func generateFinalCode() {
+        // Gerar código de 6 dígitos aleatório
+        let digits = (0...9).map { String($0) }
+        finalCode = (0..<6).map { _ in digits.randomElement()! }.joined()
+        showCode = true
     }
 }
 
@@ -169,6 +181,22 @@ struct ARExperienceOverlayView: View {
     
     var body: some View {
         ZStack {
+            // Instruções iniciais
+            if viewModel.showInstructions {
+                instructionsView
+                    .transition(.opacity.combined(with: .scale))
+            }
+            
+            // Código final quando o baú abrir
+            if viewModel.showCode {
+                codeView
+                    .transition(.asymmetric(
+                        insertion: .scale.combined(with: .opacity),
+                        removal: .opacity
+                    ))
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: viewModel.showCode)
+            }
+            
             bauView
             .position(x: xPosition1, y: yPosition1)
             
@@ -185,12 +213,23 @@ struct ARExperienceOverlayView: View {
                          }
                  )
             }
+            
+            if viewModel.isBauOpen {
+                celebrationEffects
+            }
         }
+        .animation(.easeInOut(duration: 0.5), value: viewModel.showCode)
+        .animation(.easeInOut(duration: 0.3), value: viewModel.isBauOpen)
     }
 
     func checkCollision() {
         if abs(self.xPosition1 - self.xPosition2) < 100 && abs(self.yPosition1 - self.yPosition2) < 100 {
-            collision = true
+            if !collision {
+                collision = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.viewModel.openBau()
+                }
+            }
         } else {
             collision = false
         }
@@ -211,7 +250,6 @@ struct ARExperienceOverlayView: View {
     }
     
     private var keyView: some View {
-        // Simple key view that will definitely be visible
         RoundedRectangle(cornerRadius: 10)
             .fill(Color.yellow)
             .frame(width: 60, height: 60)
@@ -220,6 +258,133 @@ struct ARExperienceOverlayView: View {
                     .font(.title)
                     .foregroundColor(.black)
             )
+    }
+    
+    private var instructionsView: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            VStack(spacing: 16) {
+                Text("🎯 Experiência AR Final")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                Text("Arraste a chave amarela até o baú para abri-lo")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                
+                Text("Quando o baú abrir, você receberá um código de 6 dígitos como recompensa!")
+                    .font(.body)
+                    .foregroundColor(.white.opacity(0.9))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+            }
+            .padding(30)
+            .background(Color.black.opacity(0.7))
+            .cornerRadius(20)
+            .padding(.horizontal, 20)
+            
+            Spacer()
+        }
+    }
+    
+    private var codeView: some View {
+        VStack(spacing: 20) {
+            Spacer()
+            
+            VStack(spacing: 16) {
+                Text("🎊 Parabéns!")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: viewModel.showCode)
+                
+                Text("Você completou a jornada RodaRico!")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: viewModel.showCode)
+                
+                Text("Seu código de recompensa é:")
+                    .font(.title3)
+                    .foregroundColor(.white.opacity(0.9))
+                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.6), value: viewModel.showCode)
+                
+                Text(viewModel.finalCode)
+                    .font(.system(size: 48, weight: .bold, design: .monospaced))
+                    .foregroundColor(.orange)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(Color.white.opacity(0.2))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.orange, lineWidth: 3)
+                            )
+                    )
+                    .scaleEffect(viewModel.showCode ? 1.0 : 0.5)
+                    .opacity(viewModel.showCode ? 1.0 : 0.0)
+                    .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.8), value: viewModel.showCode)
+                
+                Text("Guarde este código! É sua recompensa final!")
+                    .font(.body)
+                    .foregroundColor(.white.opacity(0.8))
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal)
+                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(1.0), value: viewModel.showCode)
+            }
+            .padding(30)
+            .background(Color.black.opacity(0.8))
+            .cornerRadius(20)
+            .padding(.horizontal, 20)
+            
+            Spacer()
+        }
+    }
+    
+    private var celebrationEffects: some View {
+        ZStack {
+            // Partículas de celebração
+            ForEach(0..<20, id: \.self) { index in
+                Circle()
+                    .fill(Color.orange)
+                    .frame(width: 8, height: 8)
+                    .position(
+                        x: CGFloat.random(in: 0...UIScreen.main.bounds.width),
+                        y: CGFloat.random(in: 0...UIScreen.main.bounds.height)
+                    )
+                    .scaleEffect(viewModel.isBauOpen ? 1.0 : 0.0)
+                    .opacity(viewModel.isBauOpen ? 0.8 : 0.0)
+                    .animation(
+                        .easeOut(duration: 2.0)
+                        .delay(Double(index) * 0.1),
+                        value: viewModel.isBauOpen
+                    )
+            }
+            
+            // Efeito de explosão no centro do baú
+            Circle()
+                .fill(
+                    RadialGradient(
+                        colors: [.orange, .yellow, .clear],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: 100
+                    )
+                )
+                .frame(width: 200, height: 200)
+                .position(x: xPosition1, y: yPosition1)
+                .scaleEffect(viewModel.isBauOpen ? 2.0 : 0.0)
+                .opacity(viewModel.isBauOpen ? 0.0 : 0.8)
+                .animation(.easeOut(duration: 1.0), value: viewModel.isBauOpen)
+        }
     }
 }
 

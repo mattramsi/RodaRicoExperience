@@ -17,7 +17,7 @@ struct FinalCompilationTest {
         print("🧪 Testing Main Types...")
         
         // Verificar tipos básicos
-        let _: StartGameViewState = .arView
+        let _: StartGameViewState = .startGame
         let _: GamePhase = .initial
         let _ = Question(text: "Test", options: ["A", "B"], correctAnswer: 0)
         

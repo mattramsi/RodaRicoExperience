@@ -1,5 +1,5 @@
 //
-//  ARContainerFinalView.swift
+//  FinalRewardView.swift
 //  RodaRicoExperience
 //
 //  Created by Matheus Silva on 12/08/25.
@@ -7,17 +7,13 @@
 
 import SwiftUI
 
-struct ARContainerFinalView: View {
+struct FinalRewardView: View {
     @ObservedObject var viewModel: StartGameViewModel
     
     var body: some View {
         ZStack {
-            // AR Container Final
-            ARContainerFinalContainerView(viewModel: viewModel)
-                .edgesIgnoringSafeArea(.all)
-            
             // UI Overlay
-            ARContainerFinalOverlayView(viewModel: viewModel)
+            FinalRewardOverlayView(viewModel: viewModel)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -33,6 +29,6 @@ struct ARContainerFinalView: View {
 
 #Preview {
     NavigationView {
-        ARContainerFinalView(viewModel: StartGameViewModel())
+        FinalRewardView(viewModel: StartGameViewModel())
     }
 }

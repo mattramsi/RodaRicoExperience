@@ -15,7 +15,7 @@ struct CompilationVerificationTest {
     static func testBasicTypes() {
         print("🧪 Testing Basic Types...")
         
-        let _: StartGameViewState = .arView
+        let _: StartGameViewState = .startGame
         let _: GamePhase = .initial
         let _ = Question(text: "Test", options: ["A", "B"], correctAnswer: 0)
         
@@ -46,7 +46,7 @@ struct CompilationVerificationTest {
         switch testState {
         case .initial:
             print("✅ Initial case")
-        case .arView:
+        case .startGame:
             print("✅ AR View case")
         case .luzScanner:
             print("✅ Luz Scanner case")
@@ -66,6 +66,8 @@ struct CompilationVerificationTest {
             print("✅ Game Complete case")
         case .arContainerFinal:
             print("✅ AR Container Final case")
+        case .arExperienceFinal:
+            print("✅ AR Experience Final case")
         }
         
         print("✅ Switch case: Exhaustive")

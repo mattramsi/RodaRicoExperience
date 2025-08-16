@@ -9,7 +9,7 @@ import Foundation
 
 enum StartGameViewState {
     case initial
-    case arView
+    case startGame
     case luzScanner
     case phase1Questions
     case maquiagemScanner
@@ -19,4 +19,5 @@ enum StartGameViewState {
     case phase3Questions
     case gameComplete
     case arContainerFinal
+    case arExperienceFinal
 }

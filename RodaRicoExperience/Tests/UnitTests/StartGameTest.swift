@@ -29,7 +29,7 @@ struct StartGameTest {
         print("✅ GamePhase created: \(phase)")
         
         // Test StartGameViewState
-        let state: StartGameViewState = .arView
+        let state: StartGameViewState = .startGame
         print("✅ StartGameViewState created: \(state)")
         
         print("🎉 All models working correctly!")

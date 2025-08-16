@@ -105,10 +105,15 @@ struct QuestionsPhase2View: View {
         .alert("Resultado", isPresented: $showResult) {
             Button("Continuar") {
                 if correctAnswers == 3 {
-                    print("🎉 Todas as perguntas da Fase 2 foram respondidas com sucesso! Iniciando Fase 3...")
+                    print("🎉 Todas as perguntas da Fase 2 foram respondidas com sucesso!")
+                    print("📊 Respostas corretas: \(correctAnswers)/3")
+                    print("🔄 Chamando completePhase2()...")
                     viewModel.completePhase2()
+                    print("✅ Phase 2 completada, chamando navigateToPhase3Intro()...")
                     viewModel.navigateToPhase3Intro()
+                    print("🚀 Navegação para Phase 3 solicitada!")
                 } else {
+                    print("❌ Apenas \(correctAnswers)/3 respostas corretas. Resetando...")
                     // Reset para tentar novamente
                     currentQuestionIndex = 0
                     correctAnswers = 0

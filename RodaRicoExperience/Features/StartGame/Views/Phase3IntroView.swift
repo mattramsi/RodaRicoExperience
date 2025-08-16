@@ -78,32 +78,56 @@ struct Phase3IntroView: View {
             
             // Phase 3 Description
             VStack(spacing: 16) {
-                Text("O que esperar na Fase 3?")
+                Text("Experiência AR Final - Recompensa!")
                     .font(.title3)
                     .fontWeight(.bold)
                     .foregroundColor(.orange)
                 
                 VStack(spacing: 12) {
                     HStack(alignment: .top) {
-                        Image(systemName: "1.circle.fill")
-                            .foregroundColor(.orange)
-                        Text("Você precisará escanear a luz novamente, mas desta vez com um novo scanner")
+                        Image(systemName: "questionmark.circle.fill")
+                            .foregroundColor(.green)
+                        Text("Primeiro, responda 3 perguntas finais sobre sua jornada")
                             .font(.body)
                             .multilineTextAlignment(.leading)
                     }
                     
                     HStack(alignment: .top) {
-                        Image(systemName: "2.circle.fill")
-                            .foregroundColor(.orange)
-                        Text("Responder 3 novas perguntas desafiadoras sobre sua jornada")
+                        Image(systemName: "trophy.fill")
+                            .foregroundColor(.blue)
+                        Text("Depois, veja sua recompensa AR especial")
                             .font(.body)
                             .multilineTextAlignment(.leading)
                     }
                     
                     HStack(alignment: .top) {
-                        Image(systemName: "3.circle.fill")
+                        Image(systemName: "key.fill")
                             .foregroundColor(.orange)
-                        Text("Acessar uma experiência AR final especial como recompensa")
+                        Text("Por fim, receba uma chave mágica para abrir um baú de tesouro")
+                            .font(.body)
+                            .multilineTextAlignment(.leading)
+                    }
+                    
+                    HStack(alignment: .top) {
+                        Image(systemName: "hand.draw.fill")
+                            .foregroundColor(.orange)
+                        Text("Arraste a chave até o baú para abri-lo")
+                            .font(.body)
+                            .multilineTextAlignment(.leading)
+                    }
+                    
+                    HStack(alignment: .top) {
+                        Image(systemName: "number.circle.fill")
+                            .foregroundColor(.orange)
+                        Text("Quando o baú abrir, você receberá um código de 6 dígitos")
+                            .font(.body)
+                            .multilineTextAlignment(.leading)
+                    }
+                    
+                    HStack(alignment: .top) {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.orange)
+                        Text("Este código é sua recompensa final pela jornada completa!")
                             .font(.body)
                             .multilineTextAlignment(.leading)
                     }
@@ -115,17 +139,29 @@ struct Phase3IntroView: View {
             
             Spacer()
             
-            // Action Button
-            Button("Começar Fase 3") {
-                viewModel.navigateToLuzScannerPhase3()
+            // Action Buttons
+            VStack(spacing: 16) {
+                Button("Responder Questões da Fase 3") {
+                    viewModel.navigateToPhase3Questions()
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 40)
+                .padding(.vertical, 16)
+                .background(Color.green)
+                .font(.headline)
+                .shadow(radius: 5)
+                
+                Button("Ver Recompensa AR") {
+                    viewModel.navigateToARContainerFinal()
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 40)
+                .padding(.vertical, 16)
+                .background(Color.blue)
+                .cornerRadius(12)
+                .font(.headline)
+                .shadow(radius: 5)
             }
-            .foregroundColor(.white)
-            .padding(.horizontal, 40)
-            .padding(.vertical, 16)
-            .background(Color.orange)
-            .cornerRadius(12)
-            .font(.headline)
-            .shadow(radius: 5)
             
             // Back Button
             Button("Voltar à Fase 2") {

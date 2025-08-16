@@ -54,7 +54,7 @@ final class StartGameViewModel: ObservableObject {
         isInstructionsVisible = false
         isScanInstructionsVisible = false
         isTrackingActive = false
-        currentView = .arView
+        currentView = .startGame
         print("🔙 Going back to AR View - System reset")
     }
     
@@ -86,8 +86,15 @@ final class StartGameViewModel: ObservableObject {
     }
     
     func navigateToPhase3Intro() {
+        print("🔄 navigateToPhase3Intro() chamado")
+        print("📍 Estado atual: \(currentView)")
+        print("📍 Fase atual: \(currentPhase)")
+        
         currentView = .phase3Intro
         currentPhase = .phase3Intro
+        
+        print("✅ Estado alterado para: \(currentView)")
+        print("✅ Fase alterada para: \(currentPhase)")
         print("🌟 Navigating to Phase 3 Introduction")
     }
     
@@ -106,15 +113,20 @@ final class StartGameViewModel: ObservableObject {
         print("🎯 Navigating to Final AR Container")
     }
     
+    func navigateToARExperienceFinal() {
+        currentView = .arExperienceFinal
+        print("🎊 Navigating to Final AR Experience with Key and Treasure")
+    }
+    
     func goBackToPreviousView() {
         switch currentView {
         case .initial:
             // Não há view anterior para o estado inicial
             break
-        case .arView:
+        case .startGame:
             currentView = .initial
         case .luzScanner:
-            currentView = .arView
+            currentView = .startGame
         case .phase1Questions:
             currentView = .luzScanner
         case .maquiagemScanner:
@@ -130,6 +142,8 @@ final class StartGameViewModel: ObservableObject {
         case .gameComplete:
             currentView = .phase3Questions
         case .arContainerFinal:
+            currentView = .arExperienceFinal
+        case .arExperienceFinal:
             currentView = .gameComplete
         }
         print("🔙 Going back to previous view")

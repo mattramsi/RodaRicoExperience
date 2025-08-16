@@ -24,7 +24,7 @@ extension StartGameViewState {
     public var displayName: String {
         switch self {
         case .initial: return "Initial"
-        case .arView: return "AR View"
+        case .startGame: return "AR View"
         case .luzScanner: return "Luz Scanner"
         case .phase1Questions: return "Phase 1 Questions"
         case .maquiagemScanner: return "Maquiagem Scanner"
@@ -34,6 +34,7 @@ extension StartGameViewState {
         case .phase3Questions: return "Phase 3 Questions"
         case .gameComplete: return "Game Complete"
         case .arContainerFinal: return "AR Container Final"
+        case .arExperienceFinal: return "AR Experience Final"
         }
     }
 }

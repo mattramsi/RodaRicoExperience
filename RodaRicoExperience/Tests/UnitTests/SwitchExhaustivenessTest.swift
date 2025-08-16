@@ -15,7 +15,7 @@ struct SwitchExhaustivenessTest {
         
         let allStates: [StartGameViewState] = [
             .initial,
-            .arView,
+            .startGame,
             .luzScanner,
             .phase1Questions,
             .maquiagemScanner,

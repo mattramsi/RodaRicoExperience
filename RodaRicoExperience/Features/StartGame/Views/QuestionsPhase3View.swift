@@ -109,7 +109,6 @@ struct QuestionsPhase3View: View {
                     viewModel.completePhase3()
                     viewModel.navigateToARContainerFinal()
                 } else {
-                    // Reset para tentar novamente
                     currentQuestionIndex = 0
                     correctAnswers = 0
                 }

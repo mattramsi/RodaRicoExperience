@@ -1,5 +1,5 @@
 //
-//  ARContainerFinalOverlayView.swift
+//  FinalRewardOverlayView.swift
 //  RodaRicoExperience
 //
 //  Created by Matheus Silva on 12/08/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ARContainerFinalOverlayView: View {
+struct FinalRewardOverlayView: View {
     @ObservedObject var viewModel: StartGameViewModel
     
     var body: some View {
@@ -129,6 +129,19 @@ struct ARContainerFinalOverlayView: View {
                     .cornerRadius(15)
                 }
                 
+                // Continue to Final Experience Button
+                Button("🎁 Continuar para Experiência Final - Chave e Baú") {
+                    viewModel.navigateToARExperienceFinal()
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 30)
+                .padding(.vertical, 16)
+                .background(Color.orange)
+                .cornerRadius(12)
+                .font(.headline)
+                .shadow(radius: 5)
+                .padding(.top, 20)
+                
                 // Reset Button
                 Button("Reset AR Session") {
                     viewModel.resetARSession()
@@ -149,5 +162,5 @@ struct ARContainerFinalOverlayView: View {
 }
 
 #Preview {
-    ARContainerFinalOverlayView(viewModel: StartGameViewModel())
+    FinalRewardOverlayView(viewModel: StartGameViewModel())
 }

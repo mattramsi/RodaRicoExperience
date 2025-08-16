@@ -18,7 +18,7 @@ struct SwitchCaseTest {
         switch testState {
         case .initial:
             print("✅ Initial case")
-        case .arView:
+        case .startGame:
             print("✅ AR View case")
         case .luzScanner:
             print("✅ Luz Scanner case")
@@ -38,6 +38,8 @@ struct SwitchCaseTest {
             print("✅ Game Complete case")
         case .arContainerFinal:
             print("✅ AR Container Final case")
+        case .arExperienceFinal:
+            print("✅ AR Experience Final case")
         }
         
         print("🎉 Switch case test passed!")

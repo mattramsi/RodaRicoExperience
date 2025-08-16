@@ -88,7 +88,7 @@ extension StartGameCompilationOrder {
         print("🔍 Checking StartGame dependencies...")
         
         // Verificar se os Models estão disponíveis
-        let _: StartGameViewState = .arView
+        let _: StartGameViewState = .startGame
         let _: GamePhase = .initial
         let _ = Question(text: "Test", options: ["A", "B"], correctAnswer: 0)
         
