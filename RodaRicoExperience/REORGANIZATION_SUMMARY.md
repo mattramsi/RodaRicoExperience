@@ -117,3 +117,5 @@ RodaRicoExperience/
 ## 🎉 Status: Reorganização Concluída com Sucesso!
 
 O projeto agora está organizado de forma profissional e escalável, seguindo as melhores práticas da comunidade iOS/Swift.
+
+

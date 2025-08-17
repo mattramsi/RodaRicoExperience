@@ -18,16 +18,6 @@ struct LuzStickerScannerView: View {
             
             // UI Overlay
             LuzStickerOverlayView(viewModel: viewModel)
-            
-            // Success Modal
-            if viewModel.isSuccessVisible {
-                LuzStickerSuccessView(
-                    isVisible: $viewModel.isSuccessVisible,
-                    onDismiss: {
-                        viewModel.navigateToPhase1Questions()
-                    }
-                )
-            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

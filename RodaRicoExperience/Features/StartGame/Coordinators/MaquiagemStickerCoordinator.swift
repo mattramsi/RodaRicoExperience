@@ -144,10 +144,9 @@ final class MaquiagemStickerCoordinator: NSObject, ARSessionDelegate {
         if stickerName == "Sticker_Maquiagem" && !hasDetectedMaquiagem {
             hasDetectedMaquiagem = true
             print("🎉 Maquiagem sticker detected successfully!")
-            
+
             DispatchQueue.main.async {
-                self.viewModel.detectionCount += 1
-                self.viewModel.isSuccessVisible = true
+                self.viewModel.currentView = .maquiagemScannerSuccess
             }
             
             // Add visual feedback

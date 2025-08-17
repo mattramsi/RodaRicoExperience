@@ -18,20 +18,30 @@ struct SwitchCaseTest {
         switch testState {
         case .initial:
             print("✅ Initial case")
+        case .intro:
+            print("✅ Intro case")
         case .startGame:
-            print("✅ AR View case")
+            print("✅ Start Game")
+        case .missionStarted:
+            print("✅ Mission Started")
         case .luzScanner:
             print("✅ Luz Scanner case")
+        case .luzScannerSuccess:
+            print("✅ Luz Scanner Success case")
         case .phase1Questions:
             print("✅ Phase 1 Questions case")
         case .maquiagemScanner:
             print("✅ Maquiagem Scanner case")
+        case .maquiagemScannerSuccess:
+            print("✅ Maquiagem Scanner Success case")
         case .phase2Questions:
             print("✅ Phase 2 Questions case")
         case .phase3Intro:
             print("✅ Phase 3 Intro case")
         case .luzScannerPhase3:
             print("✅ Luz Scanner Phase 3 case")
+        case .luzScannerPhase3Success:
+            print("✅ Luz Scanner Phase 3 Success case")
         case .phase3Questions:
             print("✅ Phase 3 Questions case")
         case .gameComplete:
@@ -40,6 +50,8 @@ struct SwitchCaseTest {
             print("✅ AR Container Final case")
         case .arExperienceFinal:
             print("✅ AR Experience Final case")
+        case .missionFailed:
+            print("✅ Mission Failed case")
         }
         
         print("🎉 Switch case test passed!")

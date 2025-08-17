@@ -15,16 +15,23 @@ struct SwitchExhaustivenessTest {
         
         let allStates: [StartGameViewState] = [
             .initial,
+            .intro,
             .startGame,
+            .missionStarted,
             .luzScanner,
+            .luzScannerSuccess,
             .phase1Questions,
             .maquiagemScanner,
+            .maquiagemScannerSuccess,
             .phase2Questions,
             .phase3Intro,
             .luzScannerPhase3,
+            .luzScannerPhase3Success,
             .phase3Questions,
             .gameComplete,
-            .arContainerFinal
+            .arContainerFinal,
+            .arExperienceFinal,
+            .missionFailed
         ]
         
         print("✅ Total states: \(allStates.count)")

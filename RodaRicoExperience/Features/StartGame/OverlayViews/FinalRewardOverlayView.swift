@@ -12,25 +12,6 @@ struct FinalRewardOverlayView: View {
     
     var body: some View {
         VStack {
-            // Status indicator
-            HStack {
-                Spacer()
-                VStack {
-                    Circle()
-                        .fill(viewModel.isTrackingActive ? Color.orange : Color.red)
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.isTrackingActive ? "Detectando" : "Procurando")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                }
-                .padding()
-                .background(Color.black.opacity(0.7))
-                .cornerRadius(10)
-                .padding()
-            }
-            
-            Spacer()
-            
             // Final Reward Instructions
             VStack(spacing: 20) {
                 Image(systemName: "trophy.fill")
@@ -141,17 +122,6 @@ struct FinalRewardOverlayView: View {
                 .font(.headline)
                 .shadow(radius: 5)
                 .padding(.top, 20)
-                
-                // Reset Button
-                Button("Reset AR Session") {
-                    viewModel.resetARSession()
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-                .background(Color.blue)
-                .cornerRadius(8)
-                .padding(.top, 10)
             }
             .padding()
             .background(Color.black.opacity(0.7))

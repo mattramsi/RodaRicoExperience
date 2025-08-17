@@ -13,7 +13,7 @@ struct FinalRewardView: View {
     var body: some View {
         ZStack {
             // UI Overlay
-            FinalRewardOverlayView(viewModel: viewModel)
+            ARContainerFinalOverlayView(viewModel: viewModel)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {

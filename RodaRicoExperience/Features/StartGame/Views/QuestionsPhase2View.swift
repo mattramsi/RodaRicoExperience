@@ -12,53 +12,61 @@ struct QuestionsPhase2View: View {
     @State private var currentQuestionIndex = 0
     @State private var correctAnswers = 0
     @State private var showResult = false
+    @State private var showWrongAnswer = false
     
     private let questions = [
         Question(
-            text: "Qual é a cor principal da maquiagem?",
-            options: ["Azul", "Verde", "Rosa", "Amarelo"],
+            text: "Qual é o segundo componente que deve ser desarmado na bomba?",
+            options: ["Sistema de ignição", "Detonador principal", "Cronômetro", "Sistema de segurança"],
             correctAnswer: 2
         ),
         Question(
-            text: "O que a maquiagem representa na experiência?",
-            options: ["Beleza e transformação", "Limpeza", "Exercício", "Alimentação"],
-            correctAnswer: 0
+            text: "Quantos componentes você precisa desarmar no total?",
+            options: ["2", "3", "4", "5"],
+            correctAnswer: 1
         ),
         Question(
-            text: "Quantas fases você já completou até agora?",
-            options: ["1", "2", "3", "4"],
-            correctAnswer: 1
+            text: "O que acontece se o tempo acabar antes de desarmar a bomba?",
+            options: ["A bomba explode", "A missão é cancelada", "Você ganha mais tempo", "A bomba se desarma sozinha"],
+            correctAnswer: 0
         )
     ]
     
     var body: some View {
         VStack(spacing: 20) {
+            // Timer da Missão
+            MissionTimerView(
+                timeRemaining: viewModel.timeRemaining,
+                isTimerRunning: viewModel.isTimerRunning
+            )
+            
             // Progress Bar
             VStack(spacing: 8) {
                 HStack {
-                    Text("Progresso")
+                    Text("🔍 PROGRESSO DO DESARMA")
                         .font(.headline)
-                        .foregroundColor(.primary)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
                     Spacer()
                     Text("\(correctAnswers)/3")
                         .font(.headline)
-                        .foregroundColor(.pink)
+                        .foregroundColor(.green)
                 }
                 
                 ProgressView(value: Double(correctAnswers), total: 3.0)
-                    .progressViewStyle(LinearProgressViewStyle(tint: .pink))
+                    .progressViewStyle(LinearProgressViewStyle(tint: .green))
                     .scaleEffect(x: 1, y: 2, anchor: .center)
             }
             .padding(.horizontal)
-            .padding(.top)
             
             Spacer()
             
             // Question Content
             VStack(spacing: 24) {
-                Text("Pergunta \(currentQuestionIndex + 1) de \(questions.count)")
+                Text("🚨 PERGUNTA \(currentQuestionIndex + 1) de \(questions.count)")
                     .font(.title2)
-                    .foregroundColor(.secondary)
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
                 
                 Text(questions[currentQuestionIndex].text)
                     .font(.title3)
@@ -96,14 +104,15 @@ struct QuestionsPhase2View: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Voltar") {
+                Button("🚨 ABORTAR MISSÃO") {
                     viewModel.goBackToPreviousView()
                 }
                 .foregroundColor(.red)
+                .fontWeight(.bold)
             }
         }
-        .alert("Resultado", isPresented: $showResult) {
-            Button("Continuar") {
+        .alert("✅ COMPONENTE DESARMADO!", isPresented: $showResult) {
+            Button("CONTINUAR DESARMA") {
                 if correctAnswers == 3 {
                     print("🎉 Todas as perguntas da Fase 2 foram respondidas com sucesso!")
                     print("📊 Respostas corretas: \(correctAnswers)/3")
@@ -121,10 +130,17 @@ struct QuestionsPhase2View: View {
             }
         } message: {
             if correctAnswers == 3 {
-                Text("Parabéns! Você respondeu todas as perguntas corretamente! Iniciando Fase 3...")
+                Text("Parabéns! Você desarmou o segundo componente da bomba! Continue para o último!")
             } else {
                 Text("Você acertou \(correctAnswers) de 3 perguntas. Tente novamente!")
             }
+        }
+        .alert("❌ RESPOSTA INCORRETA!", isPresented: $showWrongAnswer) {
+            Button("CONTINUAR") {
+                // Continua para próxima pergunta
+            }
+        } message: {
+            Text("Você perdeu 30 segundos do seu tempo! Tempo restante: \(formatTime(viewModel.timeRemaining))")
         }
     }
     
@@ -136,6 +152,8 @@ struct QuestionsPhase2View: View {
             print("✅ Pergunta \(currentQuestionIndex + 1) da Fase 2 respondida corretamente!")
         } else {
             print("❌ Pergunta \(currentQuestionIndex + 1) da Fase 2 respondida incorretamente. Resposta correta: \(question.options[question.correctAnswer])")
+            viewModel.penaltyTime() // Aplica penalidade de 30 segundos
+            showWrongAnswer = true
         }
         
         // Avançar para próxima pergunta ou mostrar resultado
@@ -144,6 +162,12 @@ struct QuestionsPhase2View: View {
         } else {
             showResult = true
         }
+    }
+    
+    private func formatTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 

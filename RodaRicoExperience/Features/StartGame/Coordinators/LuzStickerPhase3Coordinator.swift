@@ -112,10 +112,9 @@ final class LuzStickerPhase3Coordinator: NSObject, ARSessionDelegate {
             print("🎉 Phase 3: Luz sticker detected successfully!")
             
             DispatchQueue.main.async {
-                self.viewModel.detectionCount += 1
-                self.viewModel.isSuccessVisible = true
+                self.viewModel.currentView = .luzScannerPhase3Success
             }
-            
+    
             // Add visual feedback
             addVisualIndicator(at: imageAnchor)
             

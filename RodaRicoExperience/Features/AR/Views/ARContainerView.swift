@@ -10,34 +10,74 @@ import ARKit
 import RealityKit
 
 // MARK: - Main View
-struct ARExperienceView: View {
-    @StateObject private var viewModel = ARExperienceViewModel()
+struct TreasureHuntARView: View {
+    @StateObject private var viewModel = TreasureHuntARViewModel()
+    @EnvironmentObject private var startGameviewModel: StartGameViewModel
     
     var body: some View {
         ZStack {
-            // AR Container
-            ARExperienceContainerView(viewModel: viewModel)
-                .edgesIgnoringSafeArea(.all)
+            // AR Container - só mostra quando o jogo não terminou
+            if !viewModel.showCode {
+                TreasureHuntARContainerView(viewModel: viewModel)
+                    .edgesIgnoringSafeArea(.all)
+                    .zIndex(0)
+                
+                TreasureHuntAROverlayView(viewModel: viewModel)
+                
+                VStack {
+                    VStack(spacing: 16) {
+                        Text("🎯 Caça ao Tesouro AR")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        
+                        Text("Arraste a chave amarela até o baú para abri-lo")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                        
+                        Text("Quando o baú abrir, você receberá um código de 6 dígitos como recompensa!")
+                            .font(.body)
+                            .foregroundColor(.white.opacity(0.9))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal)
+                    }
+                    .padding(30)
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(20)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 50)
+                    
+                    Spacer()
+                }
+            }
             
-            // UI Overlay
-            ARExperienceOverlayView(viewModel: viewModel)
-            
-            // Card Modal
-            if viewModel.isCardVisible {
-                ARCardModalView(
-                    isVisible: $viewModel.isCardVisible,
-                    onCardTapped: viewModel.handleCardTap
+            // Código final quando o baú abrir - cobre toda a tela
+            if viewModel.showCode {
+                TreasureHuntFinalRewardView(
+                    finalCode: viewModel.finalCode,
+                    onPlayAgain: {
+                        startGameviewModel.resetGame()
+                        viewModel.resetGame()
+                    }
                 )
+                .transition(.asymmetric(
+                    insertion: .scale.combined(with: .opacity),
+                    removal: .opacity
+                ))
+                .animation(.spring(response: 0.6, dampingFraction: 0.8), value: viewModel.showCode)
+                .zIndex(1) // Garante que fique acima de tudo
             }
         }
-        .navigationTitle("AR Experience")
+        .navigationTitle("Caça ao Tesouro AR")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
 // MARK: - View Model
 @MainActor
-final class ARExperienceViewModel: ObservableObject {
+final class TreasureHuntARViewModel: ObservableObject {
     @Published var isCardVisible = false
     @Published var isBauOpen = false
     @Published var isDraggingKey = false
@@ -46,12 +86,8 @@ final class ARExperienceViewModel: ObservableObject {
     @Published var showInstructions = true
     @Published var showCode = false
     @Published var finalCode = ""
-    
-    func handleCardTap() {
-        print("Cartão clicado!")
-        isCardVisible = false
-    }
-    
+    @Published var collision = false
+
     func handleBauTap() {
         if !isBauOpen {
             isCardVisible = true
@@ -118,11 +154,33 @@ final class ARExperienceViewModel: ObservableObject {
         finalCode = (0..<6).map { _ in digits.randomElement()! }.joined()
         showCode = true
     }
+    
+    func resetGame() {
+        isBauOpen = false
+        isCardVisible = false
+        showInstructions = true
+        isKeyTouchingBau = false
+        keyPosition = .zero
+        showCode = false
+        finalCode = ""
+        collision = false
+    }
+    
+    // Método para resetar posições dos elementos
+    func resetPositions() -> (CGPoint, CGPoint) {
+        let screenWidth = UIScreen.main.bounds.width
+        let screenHeight = UIScreen.main.bounds.height
+        
+        let bauPosition = CGPoint(x: screenWidth / 2, y: screenHeight / 2)
+        let keyPosition = CGPoint(x: screenWidth / 2, y: screenHeight * 0.8)
+        
+        return (bauPosition, keyPosition)
+    }
 }
 
 // MARK: - AR Container View
-struct ARExperienceContainerView: UIViewRepresentable {
-    let viewModel: ARExperienceViewModel
+struct TreasureHuntARContainerView: UIViewRepresentable {
+    let viewModel: TreasureHuntARViewModel
     
     func makeUIView(context: Context) -> ARView {
         let arView = ARView()
@@ -138,8 +196,8 @@ struct ARExperienceContainerView: UIViewRepresentable {
         // Update view if needed
     }
     
-    func makeCoordinator() -> ARExperienceCoordinator {
-        ARExperienceCoordinator(viewModel: viewModel)
+    func makeCoordinator() -> TreasureHuntARCoordinator {
+        TreasureHuntARCoordinator(viewModel: viewModel)
     }
     
     private func configureARSession(for arView: ARView) {
@@ -152,11 +210,11 @@ struct ARExperienceContainerView: UIViewRepresentable {
 }
 
 // MARK: - AR Coordinator
-final class ARExperienceCoordinator: NSObject {
-    private let viewModel: ARExperienceViewModel
+final class TreasureHuntARCoordinator: NSObject {
+    private let viewModel: TreasureHuntARViewModel
     private weak var arView: ARView?
     
-    init(viewModel: ARExperienceViewModel) {
+    init(viewModel: TreasureHuntARViewModel) {
         self.viewModel = viewModel
         super.init()
     }
@@ -168,70 +226,87 @@ final class ARExperienceCoordinator: NSObject {
 }
 
 // MARK: - UI Overlay View
-struct ARExperienceOverlayView: View {
-    @ObservedObject var viewModel: ARExperienceViewModel
+struct TreasureHuntAROverlayView: View {
+    @ObservedObject var viewModel: TreasureHuntARViewModel
     
-    @State var xPosition1: CGFloat = 200
-    @State var yPosition1: CGFloat = 300
-
-    @State var xPosition2: CGFloat = 200
-    @State var yPosition2: CGFloat = 600
-
-    @State var collision = false
+    // Posições variáveis para a chave e baú
+    @State var keyX: CGFloat = 0
+    @State var keyY: CGFloat = 0
+    @State var bauX: CGFloat = 0
+    @State var bauY: CGFloat = 0
     
     var body: some View {
         ZStack {
-            // Instruções iniciais
-            if viewModel.showInstructions {
-                instructionsView
-                    .transition(.opacity.combined(with: .scale))
-            }
-            
-            // Código final quando o baú abrir
-            if viewModel.showCode {
-                codeView
-                    .transition(.asymmetric(
-                        insertion: .scale.combined(with: .opacity),
-                        removal: .opacity
-                    ))
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: viewModel.showCode)
-            }
             
             bauView
-            .position(x: xPosition1, y: yPosition1)
+            .position(x: bauX, y: bauY)
+            .zIndex(5)
+            .onAppear {
+                // Posicionar o baú no centro da tela
+                bauX = UIScreen.main.bounds.width / 2
+                bauY = UIScreen.main.bounds.height / 2
+            }
             
             VStack {
                 Spacer()
                 keyView
-                .position(x: xPosition2, y: yPosition2)
-                                 .gesture(
-                     DragGesture()
-                         .onChanged { value in
-                             xPosition2 = value.location.x
-                             yPosition2 = value.location.y
-                             checkCollision()
-                         }
-                 )
+                .position(x: keyX, y: keyY)
+                .zIndex(5)
+                .onAppear {
+                    // Posicionar a chave na parte inferior central
+                    keyX = UIScreen.main.bounds.width / 2
+                    keyY = UIScreen.main.bounds.height * 0.8
+                }
+                .onChange(of: viewModel.showCode) { _, newValue in
+                    if !newValue {
+                        // Resetar posições quando o jogo for resetado
+                        keyX = UIScreen.main.bounds.width / 2
+                        keyY = UIScreen.main.bounds.height * 0.8
+                        bauX = UIScreen.main.bounds.width / 2
+                        bauY = UIScreen.main.bounds.height / 2
+                    }
+                }
+                .gesture(
+                    DragGesture()
+                        .onChanged { value in
+                            // Atualizar posição da chave conforme o arrasto
+                            keyX = value.location.x
+                            keyY = value.location.y
+                            
+                            // Verificar colisão
+                            checkCollision(
+                                keyPosition: CGPoint(x: keyX, y: keyY),
+                                bauPosition: CGPoint(x: bauX, y: bauY)
+                            )
+                        }
+                )
             }
             
             if viewModel.isBauOpen {
                 celebrationEffects
+                    .zIndex(8)
             }
         }
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         .animation(.easeInOut(duration: 0.5), value: viewModel.showCode)
         .animation(.easeInOut(duration: 0.3), value: viewModel.isBauOpen)
     }
 
-    func checkCollision() {
-        if abs(self.xPosition1 - self.xPosition2) < 100 && abs(self.yPosition1 - self.yPosition2) < 100 {
-            if !collision {
-                collision = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.viewModel.openBau()
-                }
+    func checkCollision(keyPosition: CGPoint, bauPosition: CGPoint) {
+        let distance = sqrt(
+            pow(keyPosition.x - bauPosition.x, 2) + 
+            pow(keyPosition.y - bauPosition.y, 2)
+        )
+        
+        let isTouching = distance < 100 // Raio de colisão
+        
+        if isTouching && !viewModel.collision {
+            viewModel.collision = true
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.viewModel.openBau()
             }
-        } else {
-            collision = false
+        } else if !isTouching && viewModel.collision {
+            viewModel.collision = false
         }
     }
     
@@ -239,7 +314,7 @@ struct ARExperienceOverlayView: View {
         Button(action: {
 //            viewModel.handleBauTap()
         }) {
-            Image(collision ? "bau_aberto" : "bau_fechado")
+            Image(viewModel.collision ? "bau_aberto" : "bau_fechado")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 120, height: 120)
@@ -258,95 +333,6 @@ struct ARExperienceOverlayView: View {
                     .font(.title)
                     .foregroundColor(.black)
             )
-    }
-    
-    private var instructionsView: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            
-            VStack(spacing: 16) {
-                Text("🎯 Experiência AR Final")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                
-                Text("Arraste a chave amarela até o baú para abri-lo")
-                    .font(.title2)
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-                
-                Text("Quando o baú abrir, você receberá um código de 6 dígitos como recompensa!")
-                    .font(.body)
-                    .foregroundColor(.white.opacity(0.9))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-            }
-            .padding(30)
-            .background(Color.black.opacity(0.7))
-            .cornerRadius(20)
-            .padding(.horizontal, 20)
-            
-            Spacer()
-        }
-    }
-    
-    private var codeView: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            
-            VStack(spacing: 16) {
-                Text("🎊 Parabéns!")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: viewModel.showCode)
-                
-                Text("Você completou a jornada RodaRico!")
-                    .font(.title2)
-                    .foregroundColor(.white)
-                    .multilineTextAlignment(.center)
-                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: viewModel.showCode)
-                
-                Text("Seu código de recompensa é:")
-                    .font(.title3)
-                    .foregroundColor(.white.opacity(0.9))
-                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.6), value: viewModel.showCode)
-                
-                Text(viewModel.finalCode)
-                    .font(.system(size: 48, weight: .bold, design: .monospaced))
-                    .foregroundColor(.orange)
-                    .padding()
-                    .background(
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.white.opacity(0.2))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 15)
-                                    .stroke(Color.orange, lineWidth: 3)
-                            )
-                    )
-                    .scaleEffect(viewModel.showCode ? 1.0 : 0.5)
-                    .opacity(viewModel.showCode ? 1.0 : 0.0)
-                    .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.8), value: viewModel.showCode)
-                
-                Text("Guarde este código! É sua recompensa final!")
-                    .font(.body)
-                    .foregroundColor(.white.opacity(0.8))
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal)
-                    .scaleEffect(viewModel.showCode ? 1.0 : 0.8)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(1.0), value: viewModel.showCode)
-            }
-            .padding(30)
-            .background(Color.black.opacity(0.8))
-            .cornerRadius(20)
-            .padding(.horizontal, 20)
-            
-            Spacer()
-        }
     }
     
     private var celebrationEffects: some View {
@@ -380,7 +366,7 @@ struct ARExperienceOverlayView: View {
                     )
                 )
                 .frame(width: 200, height: 200)
-                .position(x: xPosition1, y: yPosition1)
+                .position(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
                 .scaleEffect(viewModel.isBauOpen ? 2.0 : 0.0)
                 .opacity(viewModel.isBauOpen ? 0.0 : 0.8)
                 .animation(.easeOut(duration: 1.0), value: viewModel.isBauOpen)
@@ -388,39 +374,111 @@ struct ARExperienceOverlayView: View {
     }
 }
 
-// MARK: - Control Button Component (Removed - No longer used)
-
-// MARK: - Card Modal View
-struct ARCardModalView: View {
-    @Binding var isVisible: Bool
-    let onCardTapped: () -> Void
+// MARK: - Final Reward View
+struct TreasureHuntFinalRewardView: View {
+    let finalCode: String
+    let onPlayAgain: () -> Void
     
     var body: some View {
-        VStack {
-            Spacer()
+        ZStack {
+            // Background overlay
+            Color.black.opacity(0.9)
+                .edgesIgnoringSafeArea(.all)
             
-            cardView
-                .onTapGesture(perform: onCardTapped)
-            
-            Spacer()
+            ScrollView {
+                VStack(spacing: 30) {
+                    // Espaçamento superior para evitar corte
+                    Color.clear
+                        .frame(height: 50)
+                    
+                    VStack(spacing: 25) {
+                    Text("🎊 Parabéns!")
+                        .font(.system(size: 48, weight: .bold))
+                        .foregroundColor(.white)
+                        .scaleEffect(1.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.2), value: true)
+                    
+                    Text("Você completou a jornada RodaRico!")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .scaleEffect(1.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.4), value: true)
+                    
+                    Text("Seu código de recompensa é:")
+                        .font(.title2)
+                        .foregroundColor(.white.opacity(0.9))
+                        .scaleEffect(1.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(0.6), value: true)
+                    
+                    Text(finalCode)
+                        .font(.system(size: 56, weight: .bold, design: .monospaced))
+                        .foregroundColor(.orange)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 20)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(Color.white.opacity(0.15))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.orange, lineWidth: 4)
+                                )
+                        )
+                        .scaleEffect(1.0)
+                        .opacity(1.0)
+                        .animation(.spring(response: 0.8, dampingFraction: 0.6).delay(0.8), value: true)
+                    
+                    Text("Guarde este código! É sua recompensa final!")
+                        .font(.title3)
+                        .foregroundColor(.white.opacity(0.8))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                        .scaleEffect(1.0)
+                        .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(1.0), value: true)
+                    
+                    // Botão Jogar Novamente
+                    Button(action: onPlayAgain) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "arrow.clockwise")
+                                .font(.title2)
+                            Text("Jogar Novamente")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 40)
+                        .padding(.vertical, 16)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .fill(Color.blue)
+                                .shadow(color: .blue.opacity(0.3), radius: 10, x: 0, y: 5)
+                        )
+                    }
+                    .scaleEffect(1.0)
+                    .opacity(1.0)
+                    .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(1.2), value: true)
+                    .padding(.top, 20)
+                }
+                .padding(40)
+                .background(
+                    RoundedRectangle(cornerRadius: 25)
+                        .fill(Color.black.opacity(0.8))
+                        .shadow(color: .black.opacity(0.5), radius: 20, x: 0, y: 10)
+                )
+                .padding(.horizontal, 30)
+                
+                Color.clear
+                    .frame(height: 50)
+                }
+            }
+            .scrollIndicators(.hidden)
         }
-        .transition(.scale.combined(with: .opacity))
-        .animation(.easeInOut(duration: 0.3), value: isVisible)
-    }
-    
-    private var cardView: some View {
-        Image(systemName: "creditcard.fill")
-            .font(.system(size: 100))
-            .foregroundColor(.blue)
-            .background(Color.white)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .shadow(radius: 10)
     }
 }
 
 // MARK: - Preview
 #Preview {
     NavigationView {
-        ARExperienceView()
+        TreasureHuntARView()
     }
 }

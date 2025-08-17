@@ -8,16 +8,12 @@
 import SwiftUI
 
 struct LuzStickerSuccessView: View {
-    @Binding var isVisible: Bool
     let onDismiss: () -> Void
     
     var body: some View {
         ZStack {
             Color.black.opacity(0.5)
                 .edgesIgnoringSafeArea(.all)
-                .onTapGesture {
-                    isVisible = false
-                }
             
             VStack(spacing: 24) {
                 Image(systemName: "checkmark.circle.fill")
@@ -29,18 +25,17 @@ struct LuzStickerSuccessView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.primary)
                 
-                Text("Parabéns! Você completou a primeira missão da experiência RodaRico.")
-                    .font(.headline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-                
                 Text("A luz foi acesa e sua jornada começou!")
                     .font(.subheadline)
                     .foregroundColor(.green)
                     .multilineTextAlignment(.center)
                 
+                Text("Muito Bem! Agora vamos iniciar a primeira parte da missão, respondendo nosso quiz")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                
                 Button("Continuar") {
-                    isVisible = false
                     onDismiss()
                 }
                 .foregroundColor(.white)
@@ -53,13 +48,13 @@ struct LuzStickerSuccessView: View {
             .background(Color(.systemBackground))
             .cornerRadius(24)
             .shadow(radius: 20)
-            .scaleEffect(isVisible ? 1.0 : 0.8)
-            .opacity(isVisible ? 1.0 : 0.0)
-            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: isVisible)
+            .scaleEffect(1.0)
+            .opacity(1.0)
+            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: true)
         }
     }
 }
 
 #Preview {
-    LuzStickerSuccessView(isVisible: .constant(true), onDismiss: {})
+    LuzStickerSuccessView(onDismiss: {})
 }

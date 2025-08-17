@@ -19,69 +19,68 @@ struct StartGameView: View {
             case .initial:
                 // Initial state - welcome screen with start button
                 VStack(spacing: 30) {
-                    Text("Bem-vindo à Experiência RodaRico!")
+                    Text("🚨 MISSÃO CRÍTICA 🚨")
                         .font(.largeTitle)
                         .fontWeight(.bold)
+                        .foregroundColor(.red)
                         .multilineTextAlignment(.center)
                         .padding()
                     
-                    Text("Uma jornada interativa com AR e stickers")
-                        .font(.title3)
+                    Text("💣 BOMBA ARMADA DETECTADA! 💣")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.orange)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                    
+                    Text("Bandidos armadilharam uma bomba no local e precisamos de um especialista para desarmá-la!")
+                        .font(.body)
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                     
                     Button(action: {
-                        viewModel.currentView = .startGame
+                        viewModel.currentView = .intro
                         print("🚀 Starting AR Experience")
                     }) {
                         HStack {
-                            Image(systemName: "camera.viewfinder")
+                            Image(systemName: "bolt.fill")
                                 .font(.title2)
-                            Text("Iniciar Experiência AR")
+                            Text("🚨 INICIAR MISSÃO DE DESARMA")
                                 .font(.title2)
-                                .fontWeight(.semibold)
+                                .fontWeight(.bold)
                         }
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color.blue)
+                        .background(
+                            LinearGradient(
+                                colors: [.red, .orange],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
                         .cornerRadius(15)
                         .shadow(radius: 5)
                     }
                     
                     Spacer()
                 }
-                .navigationTitle("RodaRico")
+                .navigationTitle("🚨 MISSÃO CRÍTICA")
                 .navigationBarTitleDisplayMode(.inline)
+            case .intro:
+                StartGameOverlayView(viewModel: viewModel)
                 
             case .startGame:
-                // AR View com modais
-                ZStack {
-                    // AR Container
-                    StartGameARContainerView(viewModel: viewModel)
-                        .edgesIgnoringSafeArea(.all)
-                    
-                    // UI Overlay
-                    StartGameOverlayView(viewModel: viewModel)
-                    
-                    // Instructions Modal
-                    if viewModel.isInstructionsVisible {
-                        StartGameInstructionsModal(
-                            isVisible: $viewModel.isInstructionsVisible,
-                            onAdvance: viewModel.handleAdvance
-                        )
-                    }
-                    
-                    // Scan Instructions Modal
-                    if viewModel.isScanInstructionsVisible {
-                        StartGameScanInstructionsView(
-                            isVisible: $viewModel.isScanInstructionsVisible,
-                            onStartScanning: viewModel.handleStartScanning
-                        )
-                    }
-                }
-                .navigationTitle("Start Game")
-                .navigationBarTitleDisplayMode(.inline)
+                StartGameARContainerView(viewModel: viewModel)
+                    .edgesIgnoringSafeArea(.all)
+                    .navigationTitle("Start Game")
+                    .navigationBarTitleDisplayMode(.inline)
+                
+            case .missionStarted:
+                StartGameScanInstructionsView(
+                    onStartScanning: viewModel.handleStartScanning,
+                    viewModel: viewModel
+                )
                 
             case .luzScanner:
                 // Luz Scanner View
@@ -89,10 +88,17 @@ struct StartGameView: View {
                     .navigationTitle("Scanner - Sticker Luz")
                     .navigationBarTitleDisplayMode(.inline)
                 
+            case .luzScannerSuccess:
+                LuzStickerSuccessView(
+                    onDismiss: {
+                        viewModel.navigateToPhase1Questions()
+                    }
+                )
+                
             case .phase1Questions:
                 // Phase 1 Questions View
                 QuestionsPhase1View(viewModel: viewModel)
-                    .navigationTitle("Fase 1 - Perguntas")
+                    .navigationTitle("🚨 Fase 1 - Desarmar Componente")
                     .navigationBarTitleDisplayMode(.inline)
                 
             case .maquiagemScanner:
@@ -101,10 +107,17 @@ struct StartGameView: View {
                     .navigationTitle("Scanner - Sticker Maquiagem")
                     .navigationBarTitleDisplayMode(.inline)
                 
+            case .maquiagemScannerSuccess:
+                MaquiagemStickerSuccessView(
+                    onDismiss: {
+                        viewModel.navigateToPhase2Questions()
+                    }
+                )
+                
             case .phase2Questions:
                 // Phase 2 Questions View
                 QuestionsPhase2View(viewModel: viewModel)
-                    .navigationTitle("Fase 2 - Perguntas")
+                    .navigationTitle("🚨 Fase 2 - Desarmar Componente")
                     .navigationBarTitleDisplayMode(.inline)
                 
             case .phase3Intro:
@@ -119,10 +132,17 @@ struct StartGameView: View {
                     .navigationTitle("Scanner - Sticker Luz Fase 3")
                     .navigationBarTitleDisplayMode(.inline)
                 
+            case .luzScannerPhase3Success:
+                LuzStickerPhase3SuccessView(
+                    onDismiss: {
+                        viewModel.navigateToPhase3Questions()
+                    }
+                )
+                
             case .phase3Questions:
                 // Phase 3 Questions View
                 QuestionsPhase3View(viewModel: viewModel)
-                    .navigationTitle("Fase 3 - Perguntas Finais")
+                    .navigationTitle("🚨 Fase 3 - Desarmar Componente Final")
                     .navigationBarTitleDisplayMode(.inline)
                 
             case .gameComplete:
@@ -139,13 +159,18 @@ struct StartGameView: View {
                 
             case .arExperienceFinal:
                 // Final AR Experience View with Key and Treasure
-                ARExperienceView()
+                TreasureHuntARView()
                     .navigationTitle("Experiência AR Final")
                     .navigationBarTitleDisplayMode(.inline)
-                
-            // Switch é exaustivo, não precisa de default case
+                    
+            case .missionFailed:
+                // Mission Failed View
+                MissionFailedView(viewModel: viewModel)
+                    .navigationTitle("Missão Falhou")
+                    .navigationBarTitleDisplayMode(.inline)
             }
         }
+        .environmentObject(viewModel)
     }
 }
 

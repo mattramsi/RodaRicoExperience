@@ -1,34 +1,36 @@
 //
-//  FinalRewardView.swift
+//  ARContainerFinalView.swift
 //  RodaRicoExperience
 //
 //  Created by Matheus Silva on 12/08/25.
 //
 
 import SwiftUI
+import ARKit
+import RealityKit
 
-struct FinalRewardView: View {
+// MARK: - Main View
+struct ARContainerFinalView: View {
     @ObservedObject var viewModel: StartGameViewModel
     
     var body: some View {
         ZStack {
+            // AR Container
+            ARContainerFinalContainerView(viewModel: viewModel)
+                .edgesIgnoringSafeArea(.all)
+            
             // UI Overlay
-            FinalRewardOverlayView(viewModel: viewModel)
+            ARContainerFinalOverlayView(viewModel: viewModel)
         }
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button("Voltar") {
-                    viewModel.goBackToPreviousView()
-                }
-                .foregroundColor(.white)
-            }
-        }
+        .navigationTitle("Recompensa AR Final")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
+// MARK: - Preview
 #Preview {
     NavigationView {
-        FinalRewardView(viewModel: StartGameViewModel())
+        ARContainerFinalView(viewModel: StartGameViewModel())
     }
 }
+

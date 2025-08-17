@@ -12,53 +12,61 @@ struct QuestionsPhase3View: View {
     @State private var currentQuestionIndex = 0
     @State private var correctAnswers = 0
     @State private var showResult = false
+    @State private var showWrongAnswer = false
     
     private let questions = [
         Question(
-            text: "Qual foi o tema principal da sua jornada RodaRico?",
-            options: ["Tecnologia", "Transformação e beleza", "Esporte", "Música"],
-            correctAnswer: 1
+            text: "Qual é o último componente que deve ser desarmado para neutralizar a bomba?",
+            options: ["Detonador principal", "Sistema de ignição", "Cronômetro", "Sistema de segurança"],
+            correctAnswer: 0
         ),
         Question(
-            text: "Quantas fases você completou até agora?",
-            options: ["1", "2", "3", "4"],
+            text: "O que você deve fazer após desarmar todos os componentes?",
+            options: ["Fugir do local", "Chamar a polícia", "Verificar se está tudo seguro", "Deixar a bomba lá"],
             correctAnswer: 2
         ),
         Question(
-            text: "O que representa a luz na sua jornada?",
-            options: ["O fim da experiência", "O início de uma transformação", "Uma pausa", "Um erro"],
-            correctAnswer: 1
+            text: "Qual é a recompensa por desarmar a bomba com sucesso?",
+            options: ["Dinheiro", "Medalha de honra", "Tesouro escondido", "Nada"],
+            correctAnswer: 2
         )
     ]
     
     var body: some View {
         VStack(spacing: 20) {
+            // Timer da Missão
+            MissionTimerView(
+                timeRemaining: viewModel.timeRemaining,
+                isTimerRunning: viewModel.isTimerRunning
+            )
+            
             // Progress Bar
             VStack(spacing: 8) {
                 HStack {
-                    Text("Progresso Final")
+                    Text("🔍 PROGRESSO FINAL DO DESARMA")
                         .font(.headline)
-                        .foregroundColor(.primary)
+                        .fontWeight(.bold)
+                        .foregroundColor(.red)
                     Spacer()
                     Text("\(correctAnswers)/3")
                         .font(.headline)
-                        .foregroundColor(.orange)
+                        .foregroundColor(.green)
                 }
                 
                 ProgressView(value: Double(correctAnswers), total: 3.0)
-                    .progressViewStyle(LinearProgressViewStyle(tint: .orange))
+                    .progressViewStyle(LinearProgressViewStyle(tint: .green))
                     .scaleEffect(x: 1, y: 2, anchor: .center)
             }
             .padding(.horizontal)
-            .padding(.top)
             
             Spacer()
             
             // Question Content
             VStack(spacing: 24) {
-                Text("Pergunta Final \(currentQuestionIndex + 1) de \(questions.count)")
+                Text("🚨 PERGUNTA FINAL \(currentQuestionIndex + 1) de \(questions.count)")
                     .font(.title2)
-                    .foregroundColor(.secondary)
+                    .fontWeight(.bold)
+                    .foregroundColor(.red)
                 
                 Text(questions[currentQuestionIndex].text)
                     .font(.title3)
@@ -96,16 +104,17 @@ struct QuestionsPhase3View: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button("Voltar") {
+                Button("🚨 ABORTAR MISSÃO") {
                     viewModel.goBackToPreviousView()
                 }
                 .foregroundColor(.red)
+                .fontWeight(.bold)
             }
         }
-        .alert("Resultado Final", isPresented: $showResult) {
-            Button("Continuar") {
+        .alert("🎊 BOMBA DESARMADA COM SUCESSO!", isPresented: $showResult) {
+            Button("RECEBER RECOMPENSA") {
                 if correctAnswers == 3 {
-                    print("🎉 Todas as perguntas da Fase 3 foram respondidas com sucesso! Jornada completa!")
+                    print("🎉 Todas as perguntas da Fase 3 foram respondidas com sucesso! Bomba desarmada!")
                     viewModel.completePhase3()
                     viewModel.navigateToARContainerFinal()
                 } else {
@@ -115,10 +124,17 @@ struct QuestionsPhase3View: View {
             }
         } message: {
             if correctAnswers == 3 {
-                Text("🎊 Parabéns! Você completou toda a experiência RodaRico! Acesse sua recompensa AR especial!")
+                Text("🎊 Parabéns! Você desarmou a bomba com sucesso! Acesse sua recompensa especial!")
             } else {
-                Text("Você acertou \(correctAnswers) de 3 perguntas. Tente novamente para completar sua jornada!")
+                Text("Você acertou \(correctAnswers) de 3 perguntas. Tente novamente para completar o desarme!")
             }
+        }
+        .alert("❌ RESPOSTA INCORRETA!", isPresented: $showWrongAnswer) {
+            Button("CONTINUAR") {
+                // Continua para próxima pergunta
+            }
+        } message: {
+            Text("Você perdeu 30 segundos do seu tempo! Tempo restante: \(formatTime(viewModel.timeRemaining))")
         }
     }
     
@@ -130,6 +146,8 @@ struct QuestionsPhase3View: View {
             print("✅ Pergunta final \(currentQuestionIndex + 1) da Fase 3 respondida corretamente!")
         } else {
             print("❌ Pergunta final \(currentQuestionIndex + 1) da Fase 3 respondida incorretamente. Resposta correta: \(question.options[question.correctAnswer])")
+            viewModel.penaltyTime() // Aplica penalidade de 30 segundos
+            showWrongAnswer = true
         }
         
         // Avançar para próxima pergunta ou mostrar resultado
@@ -138,6 +156,12 @@ struct QuestionsPhase3View: View {
         } else {
             showResult = true
         }
+    }
+    
+    private func formatTime(_ time: TimeInterval) -> String {
+        let minutes = Int(time) / 60
+        let seconds = Int(time) % 60
+        return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 

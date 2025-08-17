@@ -12,26 +12,6 @@ struct LuzStickerOverlayView: View {
     
     var body: some View {
         VStack {
-            // Status indicator
-            HStack {
-                Spacer()
-                VStack {
-                    Circle()
-                        .fill(viewModel.isTrackingActive ? Color.green : Color.red)
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.isTrackingActive ? "Detectando" : "Procurando")
-                        .font(.caption)
-                        .foregroundColor(.white)
-                }
-                .padding()
-                .background(Color.black.opacity(0.7))
-                .cornerRadius(10)
-                .padding()
-            }
-            
-            Spacer()
-            
-            // Instructions
             VStack(spacing: 16) {
                 Image(systemName: "lightbulb.fill")
                     .font(.system(size: 60))
@@ -47,27 +27,13 @@ struct LuzStickerOverlayView: View {
                     .font(.headline)
                     .foregroundColor(.white.opacity(0.9))
                     .multilineTextAlignment(.center)
-                
-                Text("Detecções: \(viewModel.detectionCount)")
-                    .font(.title3)
-                    .foregroundColor(.yellow)
-                    .padding(.top, 10)
-                
-                // Reset Button
-                Button("Reset AR Session") {
-                    viewModel.resetARSession()
-                }
-                .foregroundColor(.white)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 8)
-                .background(Color.blue)
-                .cornerRadius(8)
-                .padding(.top, 10)
             }
             .padding()
             .background(Color.black.opacity(0.7))
             .cornerRadius(15)
             .padding()
+            
+            Spacer()
         }
     }
 }

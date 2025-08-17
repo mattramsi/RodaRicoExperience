@@ -110,10 +110,9 @@ final class LuzStickerCoordinator: NSObject, ARSessionDelegate {
         if stickerName == "Sticker_Luz" && !hasDetectedLuz {
             hasDetectedLuz = true
             print("🎉 Luz sticker detected successfully!")
-            
+
             DispatchQueue.main.async {
-                self.viewModel.detectionCount += 1
-                self.viewModel.isSuccessVisible = true
+                self.viewModel.currentView = .luzScannerSuccess
             }
             
             // Add visual feedback

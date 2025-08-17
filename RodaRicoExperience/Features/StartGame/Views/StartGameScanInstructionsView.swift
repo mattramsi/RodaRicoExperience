@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct StartGameScanInstructionsView: View {
-    @Binding var isVisible: Bool
     let onStartScanning: () -> Void
+    @ObservedObject var viewModel: StartGameViewModel
     
     var body: some View {
         ZStack {
             // Background Overlay
-            BackgroundOverlayView(isVisible: $isVisible)
+            BackgroundOverlayView()
             
             // Modal Content
             ModalContentView(
-                isVisible: $isVisible,
-                onStartScanning: onStartScanning
+                onStartScanning: onStartScanning,
+                viewModel: viewModel
             )
         }
     }
@@ -27,40 +27,44 @@ struct StartGameScanInstructionsView: View {
 
 // MARK: - Background Overlay Component
 private struct BackgroundOverlayView: View {
-    @Binding var isVisible: Bool
     
     var body: some View {
         Color.black.opacity(0.5)
             .edgesIgnoringSafeArea(.all)
-            .onTapGesture {
-                isVisible = false
-            }
     }
 }
 
 // MARK: - Modal Content Component
 private struct ModalContentView: View {
-    @Binding var isVisible: Bool
     let onStartScanning: () -> Void
+    let viewModel: StartGameViewModel
     
     var body: some View {
-        VStack(spacing: 24) {
-            // Header
-            HeaderView()
-            
-            // Instructions Text
-            InstructionsTextView()
-            
-            // Action Button
-            ActionButtonView(onStartScanning: onStartScanning)
+        ScrollView {
+            VStack(spacing: 24) {
+                // Header
+                HeaderView()
+                
+                // Timer da Missão
+                MissionTimerView(
+                    timeRemaining: viewModel.timeRemaining,
+                    isTimerRunning: viewModel.isTimerRunning
+                )
+                
+                // Instructions Text
+                InstructionsTextView()
+                
+                // Action Button
+                ActionButtonView(onStartScanning: onStartScanning)
+            }
+            .padding(32)
         }
-        .padding(32)
         .background(Color(.systemBackground))
         .cornerRadius(24)
         .shadow(radius: 20)
-        .scaleEffect(isVisible ? 1.0 : 0.8)
-        .opacity(isVisible ? 1.0 : 0.0)
-        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: isVisible)
+        .scaleEffect(1.0)
+        .opacity(1.0)
+        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: true)
     }
 }
 
@@ -68,14 +72,14 @@ private struct ModalContentView: View {
 private struct HeaderView: View {
     var body: some View {
         VStack(spacing: 16) {
-            Image(systemName: "lightbulb.fill")
+            Image(systemName: "exclamationmark.triangle.fill")
                 .font(.system(size: 60))
-                .foregroundColor(.yellow)
+                .foregroundColor(.red)
             
-            Text("Primeira Missão")
+            Text("🚨 MISSÃO CRÍTICA 🚨")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(.primary)
+                .foregroundColor(.red)
         }
     }
 }
@@ -84,21 +88,70 @@ private struct HeaderView: View {
 private struct InstructionsTextView: View {
     var body: some View {
         VStack(spacing: 16) {
-            Text("Bem-vindo à primeira missão da experiência RodaRico!")
+            Text("💣 BOMBA ARMADA DETECTADA! 💣")
                 .font(.headline)
+                .fontWeight(.bold)
+                .foregroundColor(.red)
+                .multilineTextAlignment(.center)
+            
+            Text("Bandidos armadilharam uma bomba no local e você é nossa única esperança para desarmá-la!")
+                .font(.body)
                 .fontWeight(.semibold)
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
+                .lineLimit(nil)
             
-            Text("Você precisa escanear o sticker 'Luz' para acender a primeira luz da sua aventura. Este é o início de uma jornada incrível!")
+            Text("⏰ Você tem APENAS 10 MINUTOS para desarmar a bomba antes que ela exploda!")
                 .font(.body)
-                .foregroundColor(.secondary)
+                .fontWeight(.bold)
+                .foregroundColor(.red)
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
             
-            Text("Dica: Mantenha o sticker estável e bem iluminado para uma detecção mais rápida.")
+            Text("🔍 Para desarmar a bomba, você deve:")
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .top) {
+                    Text("1.")
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                    Text("Escaneie o primeiro componente (Luz)")
+                        .foregroundColor(.primary)
+                }
+                
+                HStack(alignment: .top) {
+                    Text("2.")
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                    Text("Responda as perguntas de segurança")
+                        .foregroundColor(.primary)
+                }
+                
+                HStack(alignment: .top) {
+                    Text("3.")
+                        .fontWeight(.bold)
+                        .foregroundColor(.blue)
+                    Text("Repita para os outros componentes")
+                        .foregroundColor(.primary)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Text("⚠️ ATENÇÃO: Cada resposta errada custa 30 segundos do seu tempo!")
                 .font(.subheadline)
-                .foregroundColor(.yellow)
+                .fontWeight(.bold)
+                .foregroundColor(.orange)
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+            
+            Text("🎯 Dica: Mantenha o sticker estável e bem iluminado para uma detecção mais rápida.")
+                .font(.subheadline)
+                .foregroundColor(.blue)
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
         }
@@ -112,18 +165,18 @@ private struct ActionButtonView: View {
     var body: some View {
         Button(action: onStartScanning) {
             HStack {
-                Text("Começar Missão")
-                    .fontWeight(.semibold)
+                Text("🚨 INICIAR DESARMA DA BOMBA")
+                    .fontWeight(.bold)
                 
-                Image(systemName: "lightbulb.fill")
-                    .font(.system(size: 16, weight: .semibold))
+                Image(systemName: "bolt.fill")
+                    .font(.system(size: 16, weight: .bold))
             }
             .foregroundColor(.white)
             .padding(.horizontal, 32)
             .padding(.vertical, 16)
             .background(
                 LinearGradient(
-                    colors: [.yellow, .orange],
+                    colors: [.red, .orange],
                     startPoint: .leading,
                     endPoint: .trailing
                 )
@@ -135,7 +188,7 @@ private struct ActionButtonView: View {
 
 #Preview {
     StartGameScanInstructionsView(
-        isVisible: .constant(true),
-        onStartScanning: {}
+        onStartScanning: {},
+        viewModel: StartGameViewModel()
     )
 }

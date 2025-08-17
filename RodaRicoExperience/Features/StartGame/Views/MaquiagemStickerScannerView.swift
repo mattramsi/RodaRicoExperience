@@ -20,14 +20,9 @@ struct MaquiagemStickerScannerView: View {
             MaquiagemStickerOverlayView(viewModel: viewModel)
             
             // Success Modal
-            if viewModel.isSuccessVisible {
-                MaquiagemStickerSuccessView(
-                    isVisible: $viewModel.isSuccessVisible,
-                    onDismiss: {
-                        viewModel.navigateToPhase2Questions()
-                    }
-                )
-            }
+//            if viewModel.isSuccessVisible {
+               
+//            }
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
