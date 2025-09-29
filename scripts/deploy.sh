@@ -55,8 +55,9 @@ print_message "Iniciando deploy para $DEPLOY_TYPE..."
 
 # Verificar se o bundle ID está correto
 BUNDLE_ID=$(grep -o 'PRODUCT_BUNDLE_IDENTIFIER = [^;]*' RodaRicoExperience.xcodeproj/project.pbxproj | head -1 | cut -d' ' -f3)
-if [[ $BUNDLE_ID == *".."* ]]; then
-    print_warning "Bundle ID parece estar incorreto: $BUNDLE_ID"
+if [[ $BUNDLE_ID != "br.com.rn360.rodarico" ]]; then
+    print_warning "Bundle ID atual: $BUNDLE_ID"
+    print_warning "Bundle ID esperado: br.com.rn360.rodarico"
     print_warning "Corrija o bundle ID no Xcode antes de continuar"
     read -p "Deseja continuar mesmo assim? (y/N): " -n 1 -r
     echo

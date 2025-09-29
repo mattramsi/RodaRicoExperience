@@ -18,21 +18,21 @@ Este guia explica como configurar e usar o Fastlane para fazer deploy do aplicat
 ## 🛠️ Configuração Inicial
 
 ### 1. Configurar Bundle ID
-**IMPORTANTE**: O bundle ID atual está incorreto (`com.app..RodaRicoExperience`). Corrija para `com.rodarico.RodaRicoExperience`:
+**IMPORTANTE**: O bundle ID atual está incorreto (`com.app..RodaRicoExperience`). Corrija para `br.com.rn360.rodarico`:
 
 1. Abra o projeto no Xcode
 2. Selecione o target `RodaRicoExperience`
 3. Na aba `Signing & Capabilities`
-4. Altere o Bundle Identifier para `com.rodarico.RodaRicoExperience`
+4. Altere o Bundle Identifier para `br.com.rn360.rodarico`
 
 ### 2. Configurar Apple ID
 Edite o arquivo `fastlane/Appfile` e substitua:
 ```ruby
-apple_id("seu_email@exemplo.com") # Substitua pelo seu Apple ID
+apple_id("matheusramossilva999@gmail.com")
 ```
 
 ### 3. Configurar Team ID
-O Team ID já está configurado como `BKK27272P7`. Se for diferente, atualize em:
+O Team ID já está configurado como `6745573345`. Se for diferente, atualize em:
 - `fastlane/Appfile`
 - `fastlane/Fastfile`
 

@@ -8,13 +8,13 @@
 #
 
 # Apple ID do desenvolvedor
-apple_id("seu_email@exemplo.com") # Substitua pelo seu Apple ID
+apple_id("matheusramossilva999@gmail.com")
 
 # Bundle identifier do app
-app_identifier("com.rodarico.RodaRicoExperience") # Corrigido o bundle ID
+app_identifier("br.com.rn360.rodarico")
 
 # Team ID do seu time de desenvolvimento
-team_id("BKK27272P7")
+team_id("6745573345")
 
 # Nome do app na App Store
 app_name("Roda Rico Experience")
@@ -23,4 +23,4 @@ app_name("Roda Rico Experience")
 platform :ios
 
 # Para usar match (recomendado para certificados)
-# match_username("seu_email@exemplo.com") # Descomente se usar match
+# match_username("matheusramossilva999@gmail.com") # Descomente se usar match

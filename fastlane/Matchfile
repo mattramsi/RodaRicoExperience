@@ -13,9 +13,9 @@
 # git_url("https://github.com/your-username/certificates-repo")
 # storage_mode("git")
 # type("development") # ou "appstore", "adhoc", "enterprise"
-# app_identifier("com.rodarico.RodaRicoExperience")
-# username("seu_email@exemplo.com")
-# team_id("BKK27272P7")
+# app_identifier("br.com.rn360.rodarico")
+# username("matheusramossilva999@gmail.com")
+# team_id("6745573345")
 # team_name("Seu Team Name")
 # keychain_name("login.keychain")
 # keychain_password("")
