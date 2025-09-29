@@ -1,0 +1,165 @@
+# Fastfile
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available options, check out
+#
+#     https://docs.fastlane.tools/advanced/#fastfile
+#
+
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available options, check out
+#
+#     https://docs.fastlane.tools/advanced/#fastfile
+#
+
+default_platform(:ios)
+
+platform :ios do
+  before_all do
+    # Verificar se o Xcode está instalado
+    ensure_xcode_installed
+  end
+
+  desc "Incrementar build number"
+  lane :increment_build do
+    increment_build_number(
+      xcodeproj: "RodaRicoExperience.xcodeproj"
+    )
+  end
+
+  desc "Incrementar version number"
+  lane :increment_version do
+    increment_version_number(
+      xcodeproj: "RodaRicoExperience.xcodeproj"
+    )
+  end
+
+  desc "Fazer build do app"
+  lane :build do
+    # Incrementar build number
+    increment_build_number(
+      xcodeproj: "RodaRicoExperience.xcodeproj"
+    )
+
+    # Build do app
+    build_app(
+      scheme: "RodaRicoExperience",
+      export_method: "app-store",
+      export_options: {
+        method: "app-store",
+        teamID: "BKK27272P7",
+        uploadBitcode: false,
+        uploadSymbols: true,
+        compileBitcode: false
+      }
+    )
+  end
+
+  desc "Fazer upload para TestFlight"
+  lane :beta do
+    # Build do app
+    build
+
+    # Upload para TestFlight
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      skip_submission: true,
+      groups: ["Internal Testing"] # Adicione seus grupos de teste
+    )
+  end
+
+  desc "Fazer upload para App Store"
+  lane :release do
+    # Build do app
+    build
+
+    # Upload para App Store
+    upload_to_app_store(
+      force: true,
+      skip_metadata: false,
+      skip_screenshots: false,
+      submit_for_review: false, # Mude para true quando quiser submeter para revisão
+      automatic_release: false
+    )
+  end
+
+  desc "Configurar certificados e perfis"
+  lane :certificates do
+    # Gerar certificados de desenvolvimento
+    get_certificates(
+      development: true,
+      output_path: "./certs"
+    )
+
+    # Gerar certificados de distribuição
+    get_certificates(
+      development: false,
+      output_path: "./certs"
+    )
+
+    # Gerar provisioning profiles
+    get_provisioning_profile(
+      adhoc: false,
+      development: true,
+      output_path: "./profiles"
+    )
+
+    get_provisioning_profile(
+      adhoc: false,
+      development: false,
+      output_path: "./profiles"
+    )
+  end
+
+  desc "Lane para desenvolvimento local"
+  lane :dev do
+    # Build para desenvolvimento
+    build_app(
+      scheme: "RodaRicoExperience",
+      export_method: "development",
+      export_options: {
+        method: "development",
+        teamID: "BKK27272P7"
+      }
+    )
+  end
+
+  desc "Lane para adhoc distribution"
+  lane :adhoc do
+    # Build para adhoc
+    build_app(
+      scheme: "RodaRicoExperience",
+      export_method: "ad-hoc",
+      export_options: {
+        method: "ad-hoc",
+        teamID: "BKK27272P7"
+      }
+    )
+  end
+
+  desc "Lane para enterprise distribution"
+  lane :enterprise do
+    # Build para enterprise
+    build_app(
+      scheme: "RodaRicoExperience",
+      export_method: "enterprise",
+      export_options: {
+        method: "enterprise",
+        teamID: "BKK27272P7"
+      }
+    )
+  end
+
+  error do |lane, exception|
+    # Ação em caso de erro
+    UI.error("Erro na lane #{lane}: #{exception.message}")
+  end
+
+  after_all do |lane|
+    # Ação após completar qualquer lane
+    UI.success("Lane #{lane} completada com sucesso!")
+  end
+end

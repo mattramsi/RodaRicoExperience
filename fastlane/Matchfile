@@ -1,0 +1,29 @@
+# Matchfile
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available options, check out
+#
+#     https://docs.fastlane.tools/advanced/#matchfile
+#
+
+# Configuração do Match para gerenciar certificados e provisioning profiles
+# Descomente e configure as linhas abaixo se quiser usar o Match
+
+# git_url("https://github.com/your-username/certificates-repo")
+# storage_mode("git")
+# type("development") # ou "appstore", "adhoc", "enterprise"
+# app_identifier("com.rodarico.RodaRicoExperience")
+# username("seu_email@exemplo.com")
+# team_id("BKK27272P7")
+# team_name("Seu Team Name")
+# keychain_name("login.keychain")
+# keychain_password("")
+# readonly(false)
+# force_for_new_devices(false)
+# skip_confirmation(false)
+# shallow_clone(false)
+# clone_branch_directly(false)
+# force(false)
+# skip_download(false)
+# platform("ios")
