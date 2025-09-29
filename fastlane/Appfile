@@ -1,0 +1,26 @@
+# Appfile
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available options, check out
+#
+#     https://docs.fastlane.tools/advanced/#appfile
+#
+
+# Apple ID do desenvolvedor
+apple_id("seu_email@exemplo.com") # Substitua pelo seu Apple ID
+
+# Bundle identifier do app
+app_identifier("com.rodarico.RodaRicoExperience") # Corrigido o bundle ID
+
+# Team ID do seu time de desenvolvimento
+team_id("BKK27272P7")
+
+# Nome do app na App Store
+app_name("Roda Rico Experience")
+
+# Para apps iOS
+platform :ios
+
+# Para usar match (recomendado para certificados)
+# match_username("seu_email@exemplo.com") # Descomente se usar match
