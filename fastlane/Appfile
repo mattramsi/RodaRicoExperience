@@ -8,7 +8,7 @@
 #
 
 # Apple ID do desenvolvedor
-apple_id("matheusramossilva999@gmail.com")
+apple_id("tomasrossi@me.com")
 
 # Bundle identifier do app
 app_identifier("br.com.rn360.rodarico")
