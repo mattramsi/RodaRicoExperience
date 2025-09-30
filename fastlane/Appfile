@@ -11,10 +11,10 @@
 apple_id("matheusramossilva999@gmail.com")
 
 # Bundle identifier do app
-app_identifier("br.com.rn360.rodarico.app")
+app_identifier("br.com.rn360.rodarico")
 
 # Team ID do seu time de desenvolvimento
-team_id("6745573345")
+team_id("LFCKNQPX6L")
 
 # Nome do app na App Store
 app_name("Roda Rico Experience")
