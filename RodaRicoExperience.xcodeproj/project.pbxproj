@@ -24,7 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		8217EA662E4C067700068AF0 /* RodaRicoExperience.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RodaRicoExperience.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8217EA662E4C067700068AF0 /* Roda Rico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Roda Rico.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8217EA762E4C067800068AF0 /* RodaRicoExperienceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RodaRicoExperienceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8217EA802E4C067800068AF0 /* RodaRicoExperienceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RodaRicoExperienceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -85,7 +85,7 @@
 		8217EA672E4C067700068AF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8217EA662E4C067700068AF0 /* RodaRicoExperience.app */,
+				8217EA662E4C067700068AF0 /* Roda Rico.app */,
 				8217EA762E4C067800068AF0 /* RodaRicoExperienceTests.xctest */,
 				8217EA802E4C067800068AF0 /* RodaRicoExperienceUITests.xctest */,
 			);
@@ -95,9 +95,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8217EA652E4C067700068AF0 /* RodaRicoExperience */ = {
+		8217EA652E4C067700068AF0 /* Roda Rico */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8217EA8A2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "RodaRicoExperience" */;
+			buildConfigurationList = 8217EA8A2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico" */;
 			buildPhases = (
 				8217EA622E4C067700068AF0 /* Sources */,
 				8217EA632E4C067700068AF0 /* Frameworks */,
@@ -114,12 +114,12 @@
 			packageProductDependencies = (
 			);
 			productName = "Roda Rico";
-			productReference = 8217EA662E4C067700068AF0 /* RodaRicoExperience.app */;
+			productReference = 8217EA662E4C067700068AF0 /* Roda Rico.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8217EA752E4C067800068AF0 /* RodaRicoExperienceTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8217EA8D2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "RodaRicoExperienceTests" */;
+			buildConfigurationList = 8217EA8D2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico Tests" */;
 			buildPhases = (
 				8217EA722E4C067800068AF0 /* Sources */,
 				8217EA732E4C067800068AF0 /* Frameworks */,
@@ -133,16 +133,16 @@
 			fileSystemSynchronizedGroups = (
 				8217EA792E4C067800068AF0 /* RodaRicoExperienceTests */,
 			);
-			name = RodaRicoExperienceTests;
+			name = "Roda Rico Tests";
 			packageProductDependencies = (
 			);
-			productName = RodaRicoExperienceTests;
+			productName = "Roda Rico Tests";
 			productReference = 8217EA762E4C067800068AF0 /* RodaRicoExperienceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		8217EA7F2E4C067800068AF0 /* RodaRicoExperienceUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8217EA902E4C067800068AF0 /* Build configuration list for PBXNativeTarget "RodaRicoExperienceUITests" */;
+			buildConfigurationList = 8217EA902E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico UI Tests" */;
 			buildPhases = (
 				8217EA7C2E4C067800068AF0 /* Sources */,
 				8217EA7D2E4C067800068AF0 /* Frameworks */,
@@ -156,10 +156,10 @@
 			fileSystemSynchronizedGroups = (
 				8217EA832E4C067800068AF0 /* RodaRicoExperienceUITests */,
 			);
-			name = RodaRicoExperienceUITests;
+			name = "Roda Rico UI Tests";
 			packageProductDependencies = (
 			);
-			productName = RodaRicoExperienceUITests;
+			productName = "Roda Rico UI Tests";
 			productReference = 8217EA802E4C067800068AF0 /* RodaRicoExperienceUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
@@ -200,9 +200,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8217EA652E4C067700068AF0 /* RodaRicoExperience */,
-				8217EA752E4C067800068AF0 /* RodaRicoExperienceTests */,
-				8217EA7F2E4C067800068AF0 /* RodaRicoExperienceUITests */,
+				8217EA652E4C067700068AF0 /* Roda Rico */,
+				8217EA752E4C067800068AF0 /* Roda Rico Tests */,
+				8217EA7F2E4C067800068AF0 /* Roda Rico UI Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -258,12 +258,12 @@
 /* Begin PBXTargetDependency section */
 		8217EA782E4C067800068AF0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8217EA652E4C067700068AF0 /* RodaRicoExperience */;
+			target = 8217EA652E4C067700068AF0 /* Roda Rico */;
 			targetProxy = 8217EA772E4C067800068AF0 /* PBXContainerItemProxy */;
 		};
 		8217EA822E4C067800068AF0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8217EA652E4C067700068AF0 /* RodaRicoExperience */;
+			target = 8217EA652E4C067700068AF0 /* Roda Rico */;
 			targetProxy = 8217EA812E4C067800068AF0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -392,7 +392,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RodaRicoExperience/Resources/RodaRicoExperience.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -435,7 +435,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RodaRicoExperience/Resources/RodaRicoExperience.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -573,7 +573,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8217EA8A2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "RodaRicoExperience" */ = {
+		8217EA8A2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8217EA8B2E4C067800068AF0 /* Debug */,
@@ -582,7 +582,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8217EA8D2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "RodaRicoExperienceTests" */ = {
+		8217EA8D2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8217EA8E2E4C067800068AF0 /* Debug */,
@@ -591,7 +591,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8217EA902E4C067800068AF0 /* Build configuration list for PBXNativeTarget "RodaRicoExperienceUITests" */ = {
+		8217EA902E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico UI Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8217EA912E4C067800068AF0 /* Debug */,
