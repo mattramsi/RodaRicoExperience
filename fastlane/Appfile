@@ -11,7 +11,7 @@
 apple_id("tomasrossi@me.com")
 
 # Bundle identifier do app
-app_identifier("br.com.rn360.rodarico")
+app_identifier("com.tomasrossi.rodarico")
 
 # Team ID do seu time de desenvolvimento
 team_id("BKK27272P7")
