@@ -25,8 +25,8 @@
 
 /* Begin PBXFileReference section */
 		8217EA662E4C067700068AF0 /* Roda Rico.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Roda Rico.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8217EA762E4C067800068AF0 /* RodaRicoExperienceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RodaRicoExperienceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		8217EA802E4C067800068AF0 /* RodaRicoExperienceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RodaRicoExperienceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8217EA762E4C067800068AF0 /* RodaRicoExperienceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = RodaRicoExperienceTests.xctest; path = "Roda Rico Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8217EA802E4C067800068AF0 /* RodaRicoExperienceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = RodaRicoExperienceUITests.xctest; path = "Roda Rico UI Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -117,7 +117,7 @@
 			productReference = 8217EA662E4C067700068AF0 /* Roda Rico.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8217EA752E4C067800068AF0 /* RodaRicoExperienceTests */ = {
+		8217EA752E4C067800068AF0 /* Roda Rico Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8217EA8D2E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico Tests" */;
 			buildPhases = (
@@ -140,7 +140,7 @@
 			productReference = 8217EA762E4C067800068AF0 /* RodaRicoExperienceTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		8217EA7F2E4C067800068AF0 /* RodaRicoExperienceUITests */ = {
+		8217EA7F2E4C067800068AF0 /* Roda Rico UI Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8217EA902E4C067800068AF0 /* Build configuration list for PBXNativeTarget "Roda Rico UI Tests" */;
 			buildPhases = (
@@ -392,9 +392,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RodaRicoExperience/Resources/RodaRicoExperience.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BKK27272P7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -435,9 +436,10 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RodaRicoExperience/Resources/RodaRicoExperience.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BKK27272P7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;

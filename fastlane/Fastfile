@@ -50,7 +50,7 @@ platform :ios do
       export_method: "app-store",
       export_options: {
         method: "app-store",
-        teamID: "8U3A2PPN4M",
+        teamID: "BKK27272P7",
         uploadBitcode: false,
         uploadSymbols: true,
         compileBitcode: false
@@ -122,7 +122,7 @@ platform :ios do
       export_method: "development",
       export_options: {
         method: "development",
-        teamID: "8U3A2PPN4M"
+        teamID: "BKK27272P7"
       }
     )
   end
@@ -135,7 +135,7 @@ platform :ios do
       export_method: "ad-hoc",
       export_options: {
         method: "ad-hoc",
-        teamID: "8U3A2PPN4M"
+        teamID: "BKK27272P7"
       }
     )
   end
@@ -148,7 +148,7 @@ platform :ios do
       export_method: "enterprise",
       export_options: {
         method: "enterprise",
-        teamID: "8U3A2PPN4M"
+        teamID: "BKK27272P7"
       }
     )
   end

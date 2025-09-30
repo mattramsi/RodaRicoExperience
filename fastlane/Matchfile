@@ -15,7 +15,7 @@
 # type("development") # ou "appstore", "adhoc", "enterprise"
 # app_identifier("br.com.rn360.rodarico")
 # username("tomasrossi@me.com")
-# team_id("8U3A2PPN4M")
+# team_id("BKK27272P7")
 # team_name("Seu Team Name")
 # keychain_name("login.keychain")
 # keychain_password("")
