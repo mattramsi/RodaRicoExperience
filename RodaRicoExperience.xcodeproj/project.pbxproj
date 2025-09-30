@@ -110,10 +110,10 @@
 			fileSystemSynchronizedGroups = (
 				8217EA682E4C067700068AF0 /* RodaRicoExperience */,
 			);
-			name = RodaRicoExperience;
+			name = "Roda Rico";
 			packageProductDependencies = (
 			);
-			productName = RodaRicoExperience;
+			productName = "Roda Rico";
 			productReference = 8217EA662E4C067700068AF0 /* RodaRicoExperience.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -392,9 +392,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RodaRicoExperience/Resources/RodaRicoExperience.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8U3A2PPN4M;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -435,9 +435,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RodaRicoExperience/Resources/RodaRicoExperience.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8U3A2PPN4M;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
