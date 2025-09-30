@@ -46,7 +46,7 @@ platform :ios do
 
     # Build do app
     build_app(
-      scheme: "RodaRicoExperience",
+      scheme: "Roda Rico",
       export_method: "app-store",
       export_options: {
         method: "app-store",
@@ -118,7 +118,7 @@ platform :ios do
   lane :dev do
     # Build para desenvolvimento
     build_app(
-      scheme: "RodaRicoExperience",
+      scheme: "Roda Rico",
       export_method: "development",
       export_options: {
         method: "development",
@@ -131,7 +131,7 @@ platform :ios do
   lane :adhoc do
     # Build para adhoc
     build_app(
-      scheme: "RodaRicoExperience",
+      scheme: "Roda Rico",
       export_method: "ad-hoc",
       export_options: {
         method: "ad-hoc",
@@ -144,7 +144,7 @@ platform :ios do
   lane :enterprise do
     # Build para enterprise
     build_app(
-      scheme: "RodaRicoExperience",
+      scheme: "Roda Rico",
       export_method: "enterprise",
       export_options: {
         method: "enterprise",
